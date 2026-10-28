@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/img/level-sigil.jpg" width="420" alt="Uma fase do LoabPron: colagem de fotos antigas, um sigilo desenhado a tinta e uma legenda em vermelho">
+<img src="docs/img/cover.jpg" width="480" alt="LOABPRON: isto não é o notpron.">
 
 # LoabPron
 
@@ -25,7 +25,7 @@ Um oráculo assombrado, rodando **100% na sua máquina** com Gemma via Ollama, o
 ## Jogar
 
 ```bash
-git clone git@github.com:lucasrafaldini/LoabPron.git
+git clone https://github.com/lucasrafaldini/LoabPron.git
 cd LoabPron
 ./play
 ```
