@@ -1,0 +1,5 @@
+-r requirements.txt
+pytest>=8
+rcssmin>=1.1
+rjsmin>=1.2
+pillow>=13

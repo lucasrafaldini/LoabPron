@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# LoabPron :: um comando para tudo (macOS / Linux).
+#   ./play            prepara o ambiente, acorda o ollama e abre o jogo
+#   ./play --pull     baixa o modelo pelo terminal antes de abrir
+set -euo pipefail
+cd "$(dirname "$0")"
+
+red=$'\033[31m'; dim=$'\033[2m'; off=$'\033[0m'
+say() { printf '%s\n' "${dim}$*${off}"; }
+
+# 1. python + dependencias (uv se existir; senao venv + pip)
+if command -v uv >/dev/null 2>&1; then
+  say "preparando o corpo (uv)..."
+  uv sync --quiet --no-dev
+  PY=".venv/bin/python"
+else
+  command -v python3 >/dev/null 2>&1 || { echo "${red}python3 não encontrado.${off} instale python 3.11+ ou uv (https://docs.astral.sh/uv)."; exit 1; }
+  if [ ! -x .venv/bin/python ]; then
+    say "preparando o corpo (venv)..."
+    python3 -m venv .venv
+  fi
+  .venv/bin/python -m pip install --quiet --disable-pip-version-check -r requirements.txt
+  PY=".venv/bin/python"
+fi
+
+# 2. ollama (opcional: sem ele o oraculo so ecoa citacoes)
+if ! command -v ollama >/dev/null 2>&1; then
+  echo
+  echo "${red}o ollama não existe nesta máquina.${off} ele dá voz ao oráculo (gemma, local, ~1.6 GB)."
+  if [[ "$OSTYPE" == darwin* ]] && command -v brew >/dev/null 2>&1; then
+    read -r -p "instalar agora com 'brew install ollama'? [s/N] " ans
+    [[ "$ans" =~ ^[sSyY]$ ]] && brew install ollama
+  elif [[ "$OSTYPE" == linux* ]]; then
+    read -r -p "instalar agora com o script oficial (curl -fsSL https://ollama.com/install.sh | sh)? [s/N] " ans
+    [[ "$ans" =~ ^[sSyY]$ ]] && curl -fsSL https://ollama.com/install.sh | sh
+  else
+    say "baixe em https://ollama.com/download — o jogo abre mesmo assim."
+  fi
+fi
+
+exec "$PY" run.py "$@"

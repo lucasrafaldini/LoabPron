@@ -1,0 +1,21 @@
+# ambiente
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# progresso do jogador
+.save.json
+
+# lixo do macOS / volumes exFAT
+.DS_Store
+._*
+
+# builds standalone
+build/
+dist/
+*.spec
+
+# o que entrega o jogo: so local (lacrado em backend/sealed.py por tools/seal.py)
+secrets/
+docs/GABARITO.csv
