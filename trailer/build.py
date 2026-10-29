@@ -80,12 +80,8 @@ def duration(path) -> float:
 
 def elevenlabs(text, out):
     key = os.environ["ELEVENLABS_API_KEY"]
-    voice = os.environ.get("ELEVENLABS_VOICE_ID", "")
-    if not voice:
-        req = urllib.request.Request("https://api.elevenlabs.io/v1/voices", headers={"xi-api-key": key})
-        voices = json.load(urllib.request.urlopen(req))["voices"]
-        old = [v for v in voices if "old" in json.dumps(v.get("labels", {})).lower()] or voices
-        voice = old[0]["voice_id"]
+    # "Bunaya", voz da biblioteca publica: velha, feita para horror
+    voice = os.environ.get("ELEVENLABS_VOICE_ID", "dvWFQHCY2Y64dYruqGaE")
     body = json.dumps({"text": text, "model_id": "eleven_multilingual_v2",
                        "voice_settings": {"stability": 0.25, "similarity_boost": 0.6, "style": 0.8}}).encode()
     req = urllib.request.Request(f"https://api.elevenlabs.io/v1/text-to-speech/{voice}", data=body, method="POST",
