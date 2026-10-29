@@ -19,3 +19,6 @@ dist/
 # o que entrega o jogo: so local (lacrado em backend/sealed.py por tools/seal.py)
 secrets/
 docs/GABARITO.csv
+
+# trailer gerado
+trailer/out/

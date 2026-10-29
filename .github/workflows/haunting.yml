@@ -1,0 +1,29 @@
+name: the house is still haunted
+
+# A cada push e PR: instala o jogo do zero, roda os 138 testes (campanha pelas
+# tres vias, idiomas, perfil final, cofre) e a varredura que garante que nenhuma
+# resposta vazou para o repositorio. Sem Ollama: o jogo precisa funcionar sem ele.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - name: summon the house
+        run: uv sync
+      - name: walk through all the doors
+        run: uv run pytest -q
+      - name: make sure no answer leaked
+        run: uv run pytest -q tests/test_vault.py tests/test_spoilers.py
+      - name: rebuild the frontend and check it matches
+        run: |
+          uv run python tools/build.py
+          git diff --stat -- frontend/index.html
